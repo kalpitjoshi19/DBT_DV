@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "A dimension table containing unique customer records."
+    columns:
+      - name: customer_hk
+        description: "The primary key of the customer dimension (hashed)."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_nk
+        description: "The natural key (C_CUSTKEY) used for joins."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_name
+        description: "The full name of the customer."
+        tests:
+          # This is the requested test to ensure the customer name is present.
+          - not_null
+
+      - name: customer_address
+        description: "The customer's street address."
+
+      - name: customer_phone
+        description: "The customer's phone number."
+
+      - name: customer_acctbal
+        description: "The current account balance of the customer."
+
+      - name: customer_mktsegment
+        description: "The customer's market segment."
+
+      - name: customer_comment
+        description: "A comment or note about the customer."
+
+  - name: fact_lineitem
+    description: "Detailed transactional data at the line item level."
+    columns:
+      - name: lineitem_hk
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    description: "The central date dimension table."
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_supplier
+    description: "The supplier dimension table."
+    columns:
+      - name: supplier_hk
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_part
+    description: "The part dimension table."
+    columns:
+      - name: part_hk
+        tests:
+          - unique
+          - not_null
