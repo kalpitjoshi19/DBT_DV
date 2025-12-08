@@ -30,5 +30,5 @@ SELECT
     region_hk,
     r_regionkey as region_nk,
     load_ts,
-    CURRENT_TIMESTAMP() as load_date
+    CURRENT_TIMESTAMP() as first_seen_ts
 FROM new_regions    

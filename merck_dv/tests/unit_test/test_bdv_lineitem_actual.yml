@@ -1,0 +1,80 @@
+unit_tests:
+  - name: test_bdv_lineitem_actual
+    model: bdv_lineitem_actual
+    given:
+      - input: ref('hub_lineitem')
+        rows:
+          - lineitem_nk: 1001-1
+            lineitem_hk: HK_1001_1
+          - lineitem_nk: 1001-2
+            lineitem_hk: HK_1001_2
+          - lineitem_nk: 1002-1
+            lineitem_hk: HK_1002_1
+          - lineitem_nk: 1003-1
+            lineitem_hk: HK_1003_1
+
+      - input: ref('sat_lineitem_details')
+        rows:
+          - lineitem_hk: HK_1001_1
+            l_quantity: 10
+            l_extendedprice: 100
+            l_linestatus: O
+            l_returnflag: N
+            load_ts: 2025-01-10 00:00:00
+
+          - lineitem_hk: HK_1001_1
+            l_quantity: 11
+            l_extendedprice: 101
+            l_linestatus: F
+            l_returnflag: N
+            load_ts: 2025-01-11 00:00:00
+
+          - lineitem_hk: HK_1001_2
+            l_quantity: 5
+            l_extendedprice: 50
+            l_linestatus: R
+            l_returnflag: N
+            load_ts: 2025-04-10 00:00:00
+
+          - lineitem_hk: HK_1002_1
+            l_quantity: 20
+            l_extendedprice: 200
+            l_linestatus: O
+            l_returnflag: A
+            load_ts: 2025-03-10 00:00:00
+
+          - lineitem_hk: HK_1003_1
+            l_quantity: 3
+            l_extendedprice: 30
+            l_linestatus: O
+            l_returnflag: A
+            load_ts: 2025-02-10 00:00:00
+    expect:
+      rows:
+        - l_orderkey: 1001
+          l_linenumber: 1
+          l_quantity: 11
+          l_extendedprice: 101
+          l_linestatus: F
+          l_returnflag: N
+
+        - l_orderkey: 1001
+          l_linenumber: 2
+          l_quantity: 5
+          l_extendedprice: 50
+          l_linestatus: R
+          l_returnflag: N
+
+        - l_orderkey: 1002
+          l_linenumber: 1
+          l_quantity: 20
+          l_extendedprice: 200
+          l_linestatus: O
+          l_returnflag: A
+
+        - l_orderkey: 1003
+          l_linenumber: 1
+          l_quantity: 3
+          l_extendedprice: 30
+          l_linestatus: O
+          l_returnflag: A

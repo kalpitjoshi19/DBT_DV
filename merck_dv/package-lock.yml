@@ -2,4 +2,10 @@ packages:
   - name: datavault4dbt
     package: ScalefreeCOM/datavault4dbt
     version: 1.12.1
-sha1_hash: 8d411b1a5673afee4d73b85000ce4186f526daf1
+  - git: https://github.com/EqualExperts/dbt-unit-testing.git
+    name: dbt_unit_testing
+    revision: 119aaee2c265b693876a63de72b04c308cd3e3e2
+  - name: dbt_utils
+    package: dbt-labs/dbt_utils
+    version: 1.3.2
+sha1_hash: 6321f0f1dba60e4e77994e9b8d74d5eb08595f40

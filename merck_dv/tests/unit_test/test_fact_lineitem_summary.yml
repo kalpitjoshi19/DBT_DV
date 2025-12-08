@@ -1,0 +1,50 @@
+unit_tests:
+  - name: test_fact_line_item_summary
+    model: fact_line_item_summary
+    given:
+      - input: ref('bdv_lineitem_actual')
+        rows:
+        - l_orderkey: 1001
+          l_linenumber: 1
+          l_quantity: 11
+          l_extendedprice: 101
+          l_linestatus: F
+          l_returnflag: N
+
+        - l_orderkey: 1001
+          l_linenumber: 2
+          l_quantity: 5
+          l_extendedprice: 50
+          l_linestatus: R
+          l_returnflag: N
+
+        - l_orderkey: 1002
+          l_linenumber: 1
+          l_quantity: 20
+          l_extendedprice: 200
+          l_linestatus: O
+          l_returnflag: A
+
+        - l_orderkey: 1003
+          l_linenumber: 1
+          l_quantity: 3
+          l_extendedprice: 30
+          l_linestatus: O
+          l_returnflag: A
+
+    expect:
+      rows:
+        - l_returnflag: N
+          l_linestatus: F
+          total_quantity_shipped: 11
+          total_base_price: 101
+
+        - l_returnflag: N
+          l_linestatus: R
+          total_quantity_shipped: 5
+          total_base_price: 50
+
+        - l_returnflag: A
+          l_linestatus: O
+          total_quantity_shipped: 23
+          total_base_price: 230

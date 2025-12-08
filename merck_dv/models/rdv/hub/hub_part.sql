@@ -30,5 +30,5 @@ SELECT
     part_hk,
     p_partkey as part_nk,
     load_ts,
-    CURRENT_TIMESTAMP() as load_date
+    CURRENT_TIMESTAMP() as first_seen_ts
 FROM new_parts
