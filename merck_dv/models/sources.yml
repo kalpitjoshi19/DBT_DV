@@ -2,10 +2,10 @@ version: 2
 
 sources:
   - name: tpch_sf1 # Used in the source macro: {{ source('tpch_sf1', 'customer') }}
-    #database: DBT_DATAVAULT # The name of the database
-    #schema: STG # The name of the schema within that database
-    database: SNOWFLAKE_SAMPLE_DATA # The name of the database
-    schema: TPCH_SF1 # The name of the schema within that database
+    database: DBT_DATAVAULT # The name of the database
+    schema: STG # The name of the schema within that database
+    #database: SNOWFLAKE_SAMPLE_DATA # The name of the database
+    #schema: TPCH_SF1 # The name of the schema within that database
     tables:
       - name: customer
       - name: lineitem

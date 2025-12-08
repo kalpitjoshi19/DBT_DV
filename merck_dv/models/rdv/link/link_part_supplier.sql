@@ -41,5 +41,5 @@ SELECT
     supplier_hk,
     load_ts,
     rsrc,
-    CURRENT_TIMESTAMP() as load_date
+    CURRENT_TIMESTAMP() as first_seen_ts
 FROM new_links

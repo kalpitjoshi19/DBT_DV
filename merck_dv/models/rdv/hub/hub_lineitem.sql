@@ -1,5 +1,5 @@
 {{ config(
-    materialized='incremental', 
+    materialized='table', 
     unique_key='lineitem_hk',
     schema='RDV'
 ) }}
@@ -23,14 +23,11 @@ deduped_source AS (
 new_lineitems AS (
     SELECT * FROM deduped_source 
     WHERE rn = 1
-    {% if is_incremental() %}
-    AND lineitem_hk NOT IN (SELECT lineitem_hk FROM {{ this }})
-    {% endif %}
 )
 SELECT 
     lineitem_hk,
     l_orderkey || '-' || l_linenumber as lineitem_nk, -- Composite Natural Key (e.g., '1-1', '1-2')
     load_ts,
     rsrc,
-    CURRENT_TIMESTAMP() as load_date
+    CURRENT_TIMESTAMP() as first_seen_ts
 FROM new_lineitems

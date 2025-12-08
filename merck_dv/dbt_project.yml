@@ -1,15 +1,8 @@
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
 name: 'merck_dv'
 version: '1.0.0'
-
-# This setting configures which "profile" dbt uses for this project.
+config-version: 2
 profile: 'merck_dv'
 
-# These configurations specify where dbt should look for different types of files.
-# The `model-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -17,25 +10,58 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-clean-targets:         # directories to be removed by `dbt clean`
+clean-targets:
   - "target"
   - "dbt_packages"
 
 # =================================================================
-# GLOBAL VARIABLE OVERRIDE FOR DATAVAULT4DBT (The Fix)
+# END-OF-RUN HOOK FOR ROW COUNT SUMMARY
+# This hook runs AFTER all models have been built, collecting and
+# logging the row count for every successfully materialized model.
+# =================================================================
+on-run-end:
+  - "{{ log_all_materialized_row_counts() }}"
+
+# =================================================================
+# GLOBAL VARIABLE OVERRIDE FOR DATAVAULT4DBT
 # =================================================================
 vars:
   datavault4dbt:
     dv_technical_column_names:
-      # Forces the package to use the column name 'load_ts' everywhere internally
       load_timestamp_name: 'load_ts'
-      # Recommended to also force the Record Source column name
       source_column_name: 'rsrc'
 
-# Configuring models
+# Configuring models (Nested under project name 'merck_dv')
 models:
   merck_dv:
-    +schema: "{{ target.schema }}"
-    
-    example:
+    +schema: DBT_DEFAULT 
+
+    # ----------------------------------------------------------------------------------
+    # STAGING LAYER (Views)
+    # ----------------------------------------------------------------------------------
+    stg:
+      +schema: DBT_STG
       +materialized: view
+
+    # ----------------------------------------------------------------------------------
+    # RAW DATA VAULT (Incremental Models)
+    # NOTE: The post-hook for row count is removed and moved to the 'on-run-end' hook above.
+    # ----------------------------------------------------------------------------------
+    rdv:
+      +schema: DBT_RDV
+      +materialized: incremental
+
+    # ----------------------------------------------------------------------------------
+    # BUSINESS DATA VAULT (Views)
+    # ----------------------------------------------------------------------------------
+    bdv:
+      +schema: DBT_BDV
+      +materialized: view
+
+    # ----------------------------------------------------------------------------------
+    # CONSUMPTION LAYER (Table Models)
+    # NOTE: The post-hook for row count is removed and moved to the 'on-run-end' hook above.
+    # ----------------------------------------------------------------------------------
+    con:
+      +schema: DBT_CON
+      +materialized: table

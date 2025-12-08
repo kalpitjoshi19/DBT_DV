@@ -17,6 +17,7 @@ WITH customer_data AS (
         c_comment,
         c_nationkey AS nation_nk 
     FROM {{ ref('bdv_customer_actual') }}
+    WHERE customer_status = 'PRESENT'
 ),
 
 nation_region AS (

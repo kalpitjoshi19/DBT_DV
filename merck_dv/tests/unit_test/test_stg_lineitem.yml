@@ -1,0 +1,84 @@
+unit_tests:
+  - name: test_stg_lineitem
+    model: stg_lineitem
+    given:
+      - input: "source('tpch_sf1','lineitem')"
+        rows:
+          - l_orderkey: 1001
+            l_linenumber: 1
+            l_quantity: 10
+            l_extendedprice: 100
+            l_discount: 0.05
+            l_tax: 0.00
+            l_returnflag: N
+            l_linestatus: O
+            l_shipdate: 2025-01-01
+            l_commitdate: 2025-01-01
+            l_receiptdate: 2025-01-01
+            l_shipinstruct: NONE
+            l_shipmode: RAIL
+            l_comment: test
+            l_partkey: 1
+            l_suppkey: 1
+
+          - l_orderkey: 1001
+            l_linenumber: 2
+            l_quantity: 5
+            l_extendedprice: 50
+            l_discount: 0.05
+            l_tax: 0.00
+            l_returnflag: N
+            l_linestatus: O
+            l_shipdate: 2025-01-02
+            l_commitdate: 2025-01-02
+            l_receiptdate: 2025-01-02
+            l_shipinstruct: NONE
+            l_shipmode: RAIL
+            l_comment: test
+            l_partkey: 1
+            l_suppkey: 1
+
+          - l_orderkey: 1002
+            l_linenumber: 1
+            l_quantity: 20
+            l_extendedprice: 200
+            l_discount: 0.10
+            l_tax: 0.00
+            l_returnflag: R
+            l_linestatus: F
+            l_shipdate: 2025-01-03
+            l_commitdate: 2025-01-03
+            l_receiptdate: 2025-01-03
+            l_shipinstruct: NONE
+            l_shipmode: RAIL
+            l_comment: test
+            l_partkey: 2
+            l_suppkey: 2
+
+          - l_orderkey: 1003
+            l_linenumber: 1
+            l_quantity: 3
+            l_extendedprice: 30
+            l_discount: 0.00
+            l_tax: 0.00
+            l_returnflag: A
+            l_linestatus: I
+            l_shipdate: 2025-01-04
+            l_commitdate: 2025-01-04
+            l_receiptdate: 2025-01-04
+            l_shipinstruct: NONE
+            l_shipmode: RAIL
+            l_comment: test
+            l_partkey: 3
+            l_suppkey: 3
+
+    expect:
+      rows:
+        - l_orderkey: 1001
+          l_linenumber: 1
+        - l_orderkey: 1001
+          l_linenumber: 2
+        - l_orderkey: 1002
+          l_linenumber: 1
+        - l_orderkey: 1003
+          l_linenumber: 1

@@ -1,0 +1,33 @@
+unit_tests:
+  - name: test_hub_lineitem
+    model: hub_lineitem
+    given:
+      - input: ref('stg_lineitem')
+        rows:
+          - l_orderkey: 1001
+            l_linenumber: 1
+            rsrc: "TPCH_SF1"
+            lineitem_hk: "HK_1001_1"
+          - l_orderkey: 1001
+            l_linenumber: 2
+            rsrc: "TPCH_SF1"
+            lineitem_hk: "HK_1001_2"
+          - l_orderkey: 1002
+            l_linenumber: 1
+            rsrc: "TPCH_SF1"
+            lineitem_hk: "HK_1002_1"
+          - l_orderkey: 1003
+            l_linenumber: 1
+            rsrc: "TPCH_SF1"
+            lineitem_hk: "HK_1003_1"
+
+    expect:
+      rows:
+        - lineitem_nk: "1001-1"
+          rsrc: "TPCH_SF1"
+        - lineitem_nk: "1001-2"
+          rsrc: "TPCH_SF1"
+        - lineitem_nk: "1002-1"
+          rsrc: "TPCH_SF1"
+        - lineitem_nk: "1003-1"
+          rsrc: "TPCH_SF1"
